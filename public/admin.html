@@ -5,13 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lost and Found Admin</title>
     <link rel="stylesheet" href="admin.css">
+    <style>
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+
+        #manage-section .card-container,
+        #requests-section .card-container {
+            width: 100%;
+            padding: 20px;
+        }
+
+        #manage-section .expandable-card,
+        #requests-section .expandable-card {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar-container">
             <div class="navbar-left">
                 <button class="hamburger-menu">
-                
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -27,69 +46,103 @@
         </div>
     </nav>
 
-    <div id="manage-section" class="section active">
-        <div class="card-container">
-            <div class="expandable-card">
-                <div class="initial">
-                    <p>Add Item</p>
-                    <button class="expand-button">Add</button>
+    <main>
+        <div id="manage-section" class="section active">
+            <div class="card-container">
+                <div class="expandable-card">
+                    <div class="initial">
+                        <p>Add Item</p>
+                        <button class="expand-button">Add</button>
+                    </div>
+                    <div class="form-container" style="display: none;">
+                        <form class="item-form" id="add-item-form">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" placeholder="Enter item name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" name="location" placeholder="Enter Location where it was found" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea id="description" name="description" placeholder="Enter item description" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="type">Type</label>
+                                <select id="type" name="type" required>
+                                    <option value="Stationary">Stationary</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Clothing and Accessories">Clothing and Accessories</option>
+                                    <option value="Personal Belongings">Personal Belongings</option>
+                                    <option value="Miscellaneous">Miscellaneous</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Date</label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="imageupload">Upload Image</label>
+                                <input type="file" id="imageupload" name="imageupload" accept="image/*" required>
+                            </div>
+                            <button type="submit" class="submit-button">Submit</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="form-container" style="display: none;">
-                    <form class="item-form" id="add-item-form">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" placeholder="Enter item name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="location">Location</label>
-                            <input type="text" id="location" name="location" placeholder="Enter Location where it was found" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea id="description" name="description" placeholder="Enter item description" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="type">Type</label>
-                            <select id="type" name="type" required>
-                                <option value="Stationary">Stationary</option>
-                                <option value="Electronics">Electronics</option>
-                                <option value="Clothing and Accessories">Clothing and Accessories</option>
-                                <option value="Personal Belongings">Personal Belongings</option>
-                                <option value="Miscellaneous">Miscellaneous</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="date">Date</label>
-                            <input type="date" id="date" name="date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="imageupload">Upload Image</label>
-                            <input type="file" id="imageupload" name="imageupload" accept="image/*" required>
-                        </div>
-                        <button type="submit" class="submit-button">Submit</button>
-                    </form>
-                </div>
+                <div id="items-container"></div>
             </div>
-            <div id="items-container"></div>
         </div>
-    </div>
+
+        <div id="requests-section" class="section">
+            <div class="card-container">
+                <div id="requests-container"></div>
+            </div>
+        </div>
+    </main>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
         import { getFirestore, collection, addDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
-
         import { firebaseConfig } from './config.js';
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // DOM Elements
         const addItemForm = document.getElementById('add-item-form');
         const itemsContainer = document.getElementById('items-container');
+        const requestsContainer = document.getElementById('requests-container');
         const expandButton = document.querySelector('.expand-button');
         const formContainer = document.querySelector('.form-container');
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.section');
 
-        // Toggle Form Visibility
+        // Navigation
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all nav items and sections
+                navItems.forEach(nav => nav.classList.remove('active'));
+                sections.forEach(section => section.classList.remove('active'));
+                
+                // Add active class to clicked nav item and corresponding section
+                const route = item.dataset.route;
+                item.classList.add('active');
+                document.getElementById(`${route}-section`).classList.add('active');
+                
+                // Load appropriate content
+                if (route === 'requests') {
+                    fetchRequests();
+                } else if (route === 'manage') {
+                    fetchItems();
+                }
+            });
+        });
+
+        // Toggle Form
         expandButton.addEventListener('click', () => {
             const isExpanded = formContainer.style.display !== 'none';
             formContainer.style.display = isExpanded ? 'none' : 'block';
@@ -117,7 +170,7 @@
                 description: formData.get('description'),
                 type: formData.get('type'),
                 date: formData.get('date'),
-                picturebase64: '', // Placeholder for base64 image
+                picturebase64: '',
                 createdAt: new Date().toISOString()
             };
 
@@ -132,14 +185,14 @@
                 addItemForm.reset();
                 formContainer.style.display = 'none';
                 expandButton.textContent = 'Add';
-                fetchItems(); // Reload items after addition
+                fetchItems();
             } catch (error) {
                 console.error('Error adding item:', error);
                 alert('Failed to add item.');
             }
         });
 
-        // Fetch and Display Items
+        // Fetch Items
         async function fetchItems() {
             itemsContainer.innerHTML = 'Loading items...';
 
@@ -170,6 +223,41 @@
             } catch (error) {
                 console.error('Error fetching items:', error);
                 itemsContainer.innerHTML = 'Failed to load items.';
+            }
+        }
+
+        // Fetch Requests
+        async function fetchRequests() {
+            requestsContainer.innerHTML = 'Loading requests...';
+
+            try {
+                const querySnapshot = await getDocs(collection(db, 'requests'));
+                requestsContainer.innerHTML = '';
+
+                querySnapshot.forEach((doc) => {
+                    const request = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'item-card';
+                    card.innerHTML = `
+                        <div class="card-content">
+                            <div class="image-container">
+                                <img src="${request.itemPictureBase64 || '/placeholder.svg'}" alt="Item Image" class="item-image">
+                            </div>
+                            <div class="item-details">
+                                <div class="detail-row">Name: ${request.itemName || 'No name'}</div>
+                                <div class="detail-row">Location: ${request.itemLocation || 'No location'}</div>
+                                <div class="detail-row">Description: ${request.itemDescription || 'No description'}</div>
+                                <div class="detail-row">Type: ${request.itemType || 'No type'}</div>
+                                <div class="detail-row">Status: ${request.status || 'No status'}</div>
+                                <div class="detail-row">Request Date: ${request.requestCreatedAt ? new Date(request.requestCreatedAt.seconds * 1000).toLocaleDateString() : 'No date'}</div>
+                            </div>
+                        </div>
+                    `;
+                    requestsContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error fetching requests:', error);
+                requestsContainer.innerHTML = 'Failed to load requests.';
             }
         }
 

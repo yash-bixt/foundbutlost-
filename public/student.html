@@ -396,25 +396,27 @@
         }
 
         async function createRequest(item) {
-            try {
-                const requestData = {
-                    itemId: item.id,
-                    itemName: item.name,
-                    itemType: item.type,
-                    itemLocation: item.location,
-                    itemDescription: item.description,
-                    requestCreatedAt: serverTimestamp(),
-                    status: 'requested'
-                };
+    try {
+        const requestData = {
+            itemId: item.id,
+            itemName: item.name,
+            itemType: item.type,
+            itemLocation: item.location,
+            itemDescription: item.description,
+            itemPictureBase64: item.picturebase64, // Add base64 image here
+            requestCreatedAt: serverTimestamp(),
+            status: 'requested'
+        };
 
-                await addDoc(collection(db, "requests"), requestData);
-                alert('Request created successfully!');
-            } catch (error) {
-                console.error('Error creating request:', error);
-                alert('Error creating request. Please try again.');
-                throw error;
-            }
-        }
+        await addDoc(collection(db, "requests"), requestData);
+        alert('Request created successfully!');
+    } catch (error) {
+        console.error('Error creating request:', error);
+        alert('Error creating request. Please try again.');
+        throw error;
+    }
+}
+
 
         function displayItems(filteredItems) {
             itemsContainer.innerHTML = '';
