@@ -1,12 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;500;600&display=swap');
 :root {
-  --primary-color: #f6956a;
-  --primary-hover: #ffd5c3;
-  --background-dark: #000000;
-  --background-light: #fefbf5;
-  --accent-light: #e0d2ef;
-  --gray-neutral: #edeced;
-  --text-light: #fefbf5;
-  --text-dark: #000000;
+  --primary-color: #ebe1a8;
+  --primary-hover: #ffe76a;
+  --background-dark: #f8f9f8;
+  --background-light: #f8f9f8;
+  --accent-light: #e0d594;
+  --gray-neutral: #f8f9f8;
+  --text-light: #333333;
+  --text-dark: #333333;
 }
 
 * {
@@ -16,22 +17,22 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family:"poppins";
   line-height: 1.5;
-  background-color: var(--background-dark);
-  color: var(--text-light);
+  background-color: var(--background-light);
+  color: var(--text-dark);
 }
 
 .icon {
   width: 16px;
   height: 16px;
   margin-left: 8px;
-  color: var(--text-light);
+  color: var(--text-dark);
 }
 
 .dashboard {
   min-height: 100vh;
-  background-color: var(--background-dark);
+  background-color: #f6e9d5;
   padding-bottom: 80px;
   display: flex;
 }
@@ -46,41 +47,49 @@ body {
   display: flex;
   width: 90vw;
   gap: 3vw;
-  padding: 1vw;
-  flex-wrap: wrap;
-  align-items: space-evenly;
+  padding: 0.5vw;
+  flex-wrap:wrap;
+  align-items:space-evenly;
   justify-content: center;
 }
 
 .item-card {
   background: var(--background-light);
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(246, 149, 106, 0.2);
+  box-shadow: 0 8px 10px rgba(51, 51, 51, 0.2);
   margin-bottom: 20px;
   width: fit-content;
   height: min-content;
-  padding: 5px;
+  padding: 1vw;
   color: var(--text-dark);
 }
 
 .dashboard-title {
-  font-size: 6vw;
+   
+    font-size: clamp(2.5rem, 4vw, 4rem);
+  
+  
   font-weight: bold;
   margin-bottom: 20px;
-  color: var(--text-light);
+  color: var(--text-dark);
+}
+.logo{
+  width: 20%;        
+  height: auto; 
 }
 
 .filter-panel {
   background: var(--background-light);
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(246, 149, 106, 0.2);
+  box-shadow: 0 1px 3px rgba(51, 51, 51, 0.2);
   color: var(--text-dark);
 }
 
 .filter-title {
   font-weight: 500;
   margin-bottom: 15px;
+  color: #ff9800
 }
 
 .filter-content {
@@ -115,7 +124,7 @@ body {
 .search-input {
   width: 100%;
   padding: 8px;
-  border: 1px solid var(--accent-light);
+  border: 1px solid var(--primary-color);
   border-radius: 4px;
   font-size: 14px;
   background: var(--background-light);
@@ -161,14 +170,15 @@ body {
 }
 
 .item-title {
-  font-size: 18px;
+  font-size: 2rem;
   font-weight: 500;
   margin: 0;
+  color:#ff9800
 }
 
 .item-type {
   font-size: 14px;
-  color: var(--primary-color);
+  color: #ff9800;
   margin: 4px 0 0 0;
 }
 
@@ -197,14 +207,15 @@ body {
 }
 
 .studentStatus-requested {
-  background: rgb(229, 245, 150);
-  color: rgb(139, 143, 42);
+  background: #ffe76a;
+  color: #7a6f00;
 }
 
 .studentStatus-approved {
-  background: #a5ccd4;
+  background: #c8d7d6;
   color: #29243e;
 }
+
 .item-details {
   margin-bottom: 20px;
 }
@@ -228,18 +239,19 @@ body {
 }
 
 .button-primary {
-  background: var(--primary-color);
-  color: var(--text-light);
+  background: black;
+  color: white;
 }
 
 .button-primary:hover {
-  background: var(--primary-hover);
+  background:#ffffff;
   color: var(--text-dark);
+  border:1px solid black;
 }
 
 .button-outline {
   background: transparent;
-  border: 1px solid var(--accent-light);
+  border: 1px solid var(--primary-color);
   color: var(--text-dark);
 }
 
@@ -253,7 +265,7 @@ body {
   left: 0;
   right: 0;
   background: var(--background-light);
-  border-top: 1px solid var(--accent-light);
+  border-top: 1px solid var(--primary-color);
   padding: 15px;
   display: flex;
   justify-content: space-between;
@@ -261,10 +273,14 @@ body {
   z-index: 100;
   color: var(--text-dark);
 }
+.bottom-bar:hover{
+  background:#f4e8d6;
+  transition: 0.7s ease;
+}
 
 .sort-select {
   padding: 8px;
-  border: 1px solid var(--accent-light);
+  border: 1px solid var(--primary-color);
   border-radius: 4px;
   font-size: 14px;
   min-width: 140px;
@@ -278,7 +294,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(51, 51, 51, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -308,6 +324,6 @@ body {
 
 .student-details {
   padding: 15px;
-  border-top: 1px solid var(--accent-light);
+  border-top: 1px solid var(--primary-color);
   margin-top: 15px;
 }
