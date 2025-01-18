@@ -10,32 +10,90 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  background-color: white;
+  padding: 1rem;
+  padding-top:0;
 }
 
-.container {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 30px;
+.page-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 1400px;
+  
+}
+
+.site-title {
+  font-family: 'Dancing Script', cursive;
+  text-align: center;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  color: #ff9800;
+  margin-bottom: 3rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-container {
+  display: flex;
+  gap: 4rem;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem auto;
+}
+
+.form-section {
+  background-color: #ff9800;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  padding: clamp(2rem, 4vw, 4rem);
+  border-radius: 20px;
+  width: 45%;
+  min-height: 500px;
+  max-height: 800px;
+  overflow-y: auto;
+}
+
+.image-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45%;
+  height: 500px;
+  padding: 2rem;
+}
+
+.image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding-top:0;
+  margin-top:0;
+}
+
+.logo-image {
+  width: 20vw;
+  height: auto;
 }
 
 .tabs {
   display: flex;
-  border-bottom: 1px solid #e5e7eb;
-  margin-bottom: 24px;
+  border-bottom: 2px solid rgba(229, 231, 235, 0.5);
+  margin-bottom: 2rem;
+  gap: 1rem;
 }
 
 .tab-button {
   flex: 1;
-  padding: 15px;
+  padding: 1rem 1.5rem;
   border: none;
   background: none;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-weight: 600;
   color: #4b5563;
   cursor: pointer;
   position: relative;
@@ -45,16 +103,16 @@ body {
 .tab-button::after {
   content: '';
   position: absolute;
-  bottom: -1px;
+  bottom: -2px;
   left: 0;
   width: 0;
-  height: 2px;
-  background-color: #3b82f6;
+  height: 3px;
+  background-color: #000;
   transition: width 0.3s ease;
 }
 
 .tab-button.active {
-  color: #3b82f6;
+  color: #000;
 }
 
 .tab-button.active::after {
@@ -71,23 +129,23 @@ body {
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
 label {
   display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
+  margin-bottom: 0.75rem;
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
   color: #374151;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .input-field {
   width: 100%;
-  padding: 12px 16px;
+  padding: 0.875rem 1rem;
   border: 2px solid #e5e7eb;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
   transition: all 0.3s ease;
   background-color: #f9fafb;
 }
@@ -100,36 +158,99 @@ label {
 
 .submit-button {
   width: 100%;
-  padding: 12px;
+  padding: 1rem;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(45deg, #3b82f6, #2563eb);
+  background-color: #000;
   color: white;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  margin-top: 2rem;
 }
 
 .submit-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background-color: #111;
 }
 
 .toggle-text {
   text-align: center;
-  margin-top: 20px;
-  font-size: 14px;
-  color: #6b7280;
+  margin-top: 1.5rem;
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  color: #000;
 }
 
 .toggle-link {
-  color: #3b82f6;
+  color: #000;
   text-decoration: none;
-  font-weight: 500;
-  margin-left: 5px;
+  font-weight: 600;
+  margin-left: 0.5rem;
   transition: all 0.3s ease;
 }
 
+.toggle-link:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .main-container {
+      gap: 2rem;
+  }
+
+  .form-section,
+  .image-section {
+      padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container {
+      
+      padding-top:0;
+  }
+
+  .main-container {
+      flex-direction: column;
+      gap: 2rem;
+  }
+
+  .form-section {
+      width: 100%;
+      min-height: auto;
+      margin-bottom: 2rem;
+  }
+
+  .image-section {
+      display: none;
+  }
+
+  .site-title {
+      margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-section {
+      padding: 1.5rem;
+  }
+
+  .tabs {
+      flex-direction: column;
+      gap: 0.5rem;
+      border-bottom: none;
+  }
+
+  .tab-button {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0.75rem;
+  }
+}

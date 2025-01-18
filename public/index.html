@@ -7,67 +7,83 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="tabs">
-            <button class="tab-button active" id="studentTab">Student</button>
-            <button class="tab-button" id="adminTab">Admin</button>
+    <div class="page-container">
+        <div class="logo-container">
+            <img src="./logo.PNG" class="logo-image">
         </div>
+        <div class="main-container">
+            <!-- Left Side - Login Form -->
+            <div class="form-section">
+                <div class="tabs">
+                    <button class="tab-button active" id="studentTab">Student</button>
+                    <button class="tab-button" id="adminTab">Admin</button>
+                </div>
 
-        <!-- Student Login Form -->
-        <div id="studentLoginForm" class="form-container active">
-            <div class="form-group">
-                <label>Email</label>
-                <input id="loginEmail" type="email" class="input-field" placeholder="student@example.com">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input id="loginPassword" type="password" class="input-field" placeholder="••••••••">
-            </div>
-            <button id="loginStudentButton" class="submit-button">Login</button>
-            <p class="toggle-text">
-                Don't have an account?
-                <a href="#" class="toggle-link" id="goToRegister">Sign Up</a>
-            </p>
-        </div>
+                <!-- Student Login Form -->
+                <div id="studentLoginForm" class="form-container active">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input id="loginEmail" type="email" class="input-field" placeholder="student@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input id="loginPassword" type="password" class="input-field" placeholder="••••••••">
+                    </div>
+                    <button id="loginStudentButton" class="submit-button">Login</button>
+                    <p class="toggle-text">
+                        Don't have an account?
+                        <a href="#" class="toggle-link" id="goToRegister">Sign Up</a>
+                    </p>
+                </div>
 
-        <!-- Student Registration Form -->
-        <div id="studentRegisterForm" class="form-container">
-            <div class="form-group">
-                <label>Name</label>
-                <input id="registerName" type="text" class="input-field" placeholder="John Doe">
-            </div>
-            <div class="form-group">
-                <label>Roll Number</label>
-                <input id="registerRoll" type="text" class="input-field" placeholder="12345">
-            </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input id="registerEmail" type="email" class="input-field" placeholder="student@example.com">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input id="registerPassword" type="password" class="input-field" placeholder="••••••••">
-            </div>
-            <button id="registerStudentButton" class="submit-button">Sign Up</button>
-            <p class="toggle-text">
-                Already have an account?
-                <a href="#" class="toggle-link" id="goToLogin">Login</a>
-            </p>
-        </div>
+                <!-- Student Registration Form -->
+                <div id="studentRegisterForm" class="form-container">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input id="registerName" type="text" class="input-field" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Roll Number</label>
+                        <input id="registerRoll" type="text" class="input-field" placeholder="12345">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input id="registerEmail" type="email" class="input-field" placeholder="student@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input id="registerPassword" type="password" class="input-field" placeholder="••••••••">
+                    </div>
+                    <button id="registerStudentButton" class="submit-button">Sign Up</button>
+                    <p class="toggle-text">
+                        Already have an account?
+                        <a href="#" class="toggle-link" id="goToLogin">Login</a>
+                    </p>
+                </div>
 
-        <!-- Admin Login Form -->
-        <div id="adminLoginForm" class="form-container">
-            <div class="form-group">
-                <label>Email</label>
-                <input id="adminEmail" type="email" class="input-field" placeholder="admin@example.com">
+                <!-- Admin Login Form -->
+                <div id="adminLoginForm" class="form-container">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input id="adminEmail" type="email" class="input-field" placeholder="admin@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input id="adminPassword" type="password" class="input-field" placeholder="••••••••">
+                    </div>
+                    <button id="loginAdminButton" class="submit-button">Login</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input id="adminPassword" type="password" class="input-field" placeholder="••••••••">
+            
+            <!-- Right Side - Image -->
+            <div class="image-section">
+                <img src="./bgimage.png" alt="Lost and Found Illustration">
             </div>
-            <button id="loginAdminButton" class="submit-button">Login</button>
-        </div>
+            </div>
+            
+        
     </div>
+
 
     <script type="module" src="./script.js"></script>
 </body>
