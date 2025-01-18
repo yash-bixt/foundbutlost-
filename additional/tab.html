@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Management</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --background-color: #f7f9fc;
+            --text-color: #333;
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform var(--transition-speed);
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .tabs {
+            display: flex;
+            background-color: var(--primary-color);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 30px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color var(--transition-speed);
+        }
+
+        .tab:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .tab.active {
+            background-color: white;
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            padding: 30px;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            box-sizing: border-box;
+            transition: border-color var(--transition-speed);
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: var(--primary-color);
+            position: relative;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 16px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        input[type="file"] {
+            border: 1px dashed var(--primary-color);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+
+        input[type="file"]:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+
+        button:hover {
+            background-color: #3a7bc8;
+        }
+
+        .requests {
+            text-align: center;
+            color: #888;
+        }
+
+        @media (max-width: 600px) {
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('manage')">Manage item</button>
+            <button class="tab" onclick="switchTab('requests')">Requests</button>
+        </div>
+
+        <div id="manage" class="tab-content active">
+            <h2>ADD ITEM</h2>
+            <form id="itemForm">
+                <div class="form-group">
+                    <label for="item-name">Item name</label>
+                    <input type="text" id="item-name" name="item-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" placeholder="Write details here" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Type</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="electronics" name="type" value="Electronics">
+                            <label for="electronics">Electronics</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="stationery" name="type" value="Stationery">
+                            <label for="stationery">Stationery</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="clothing" name="type" value="Clothing and Accessories">
+                            <label for="clothing">Clothing and Accessories</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="personal" name="type" value="Personal Belongings">
+                            <label for="personal">Personal Belongings</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="miscellaneous" name="type" value="Miscellaneous">
+                            <label for="miscellaneous">Miscellaneous</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="color">Color</label>
+                    <input type="text" id="color" name="color" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="item-id">Item ID</label>
+                    <input type="text" id="item-id" name="item-id" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="picture">Upload Picture</label>
+                    <input type="file" id="picture" name="picture" accept="image/*" required>
+                </div>
+
+                <button type="submit">Add Item</button>
+            </form>
+        </div>
+
+        <div id="requests" class="tab-content">
+            <p class="requests">No requests to display.</p>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        document.getElementById('itemForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            let itemData = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (key === 'type') {
+                    if (!itemData[key]) {
+                        itemData[key] = [];
+                    }
+                    itemData[key].push(value);
+                } else {
+                    itemData[key] = value;
+                }
+            }
+            
+            console.log('Item Data:', itemData);
+            alert('Item added successfully!');
+            this.reset();
+        });
+
+        document.getElementById('picture').addEventListener('change', function(e) {
+            const fileName = e.target.files[0].name;
+            alert(`File selected: ${fileName}`);
+        });
+    </script>
+</body>
+</html>

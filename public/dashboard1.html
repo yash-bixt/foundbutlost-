@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found Items</title>
+    <style>
+        :root {
+            --primary-blue: #0066ff;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --border-radius: 8px;
+            --gray-text: #666;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .filter-sort {
+            display: flex;
+            gap: 10px;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+
+        .item-card {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 20px;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            background-color: #f0f0f0;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .status-tag {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-tag.requested {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .category {
+            color: var(--gray-text);
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .details-row {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .details-row strong {
+            color: var(--text-color);
+        }
+
+        .create-request {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .create-request:hover {
+            background-color: #0052cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Lost & Found Items</h1>
+        <div class="filter-sort">
+            <select id="filterSelect">
+                <option value="all">All Items</option>
+                <option value="available">Available</option>
+                <option value="requested">Requested</option>
+            </select>
+            <select id="sortSelect">
+                <option value="latest">Latest First</option>
+                <option value="oldest">Oldest First</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="itemsGrid" class="items-grid">
+        <!-- Items will be populated here -->
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getFirestore, collection, getDocs, query, orderBy, doc, updateDoc, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+        import { firebaseConfig } from './config.js';
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // UI Elements
+        const itemsGrid = document.getElementById('itemsGrid');
+        const filterSelect = document.getElementById('filterSelect');
+        const sortSelect = document.getElementById('sortSelect');
+
+        // Event Listeners
+        filterSelect.addEventListener('change', fetchAndDisplayItems);
+        sortSelect.addEventListener('change', fetchAndDisplayItems);
+
+        async function fetchAndDisplayItems() {
+            try {
+                const itemsQuery = query(collection(db, 'items'), orderBy('createdAt', sortSelect.value === 'latest' ? 'desc' : 'asc'));
+                const querySnapshot = await getDocs(itemsQuery);
+                
+                itemsGrid.innerHTML = '';
+
+                if (querySnapshot.empty) {
+                    itemsGrid.innerHTML = '<p>No items found</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const item = doc.data();
+                    item.id = doc.id; // Add the document ID as a property
+                    if (filterSelect.value === 'all' || filterSelect.value === item.status) {
+                        const card = createItemCard(item);
+                        itemsGrid.appendChild(card);
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching items:', error);
+                itemsGrid.innerHTML = `<p>Error loading items: ${error.message}</p>`;
+            }
+        }
+
+        async function createRequest(item) {
+            try {
+                // Add the request to the 'requests' collection
+                const requestRef = await addDoc(collection(db, 'requests'), {
+                    itemId: item.id, // assuming each item has a unique 'id' field
+                    itemName: item.name,
+                    itemLocation: item.location,
+                    itemDescription: item.description,
+                    requestDate: new Date(),
+                    status: 'pending',  // set the status of the request (can be 'pending', 'approved', etc.)
+                });
+
+                // Update the item status to 'requested' in the 'items' collection
+                const itemRef = doc(db, 'items', item.id); // Assuming 'id' is used as the document ID
+                await updateDoc(itemRef, {
+                    status: 'requested',
+                });
+
+                alert('Request has been created successfully!');
+                fetchAndDisplayItems();  // Refresh the items list
+
+            } catch (error) {
+                console.error('Error creating request:', error);
+                alert('There was an error creating the request.');
+            }
+        }
+
+        function createItemCard(item) {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+
+            card.innerHTML = `
+                <div class="item-image">
+                    ${item.picturebase64 
+                        ? `<img src="${item.picturebase64}" alt="${item.name}" style="max-width: 100%; height: 100%; object-fit: cover; border-radius: var(--border-radius);">` 
+                        : '<span>📷</span>'}
+                </div>
+                <div class="item-details">
+                    <div class="item-title">
+                        <h3 class="item-name">${item.name}</h3>
+                        <span class="status-tag ${item.status || 'available'}">${item.status || 'available'}</span>
+                    </div>
+                    <div class="category">${item.color}</div>
+                    <div class="details-row">
+                        <strong>Location:</strong> ${item.location}
+                    </div>
+                    <div class="details-row">
+                        <strong>Description:</strong> ${item.description}
+                    </div>
+                    <div class="details-row">
+                        <strong>Date:</strong> ${new Date(item.createdAt).toLocaleDateString()}
+                    </div>
+                    ${item.status !== 'requested' ? ` 
+                        <button class="create-request">
+                            Create Request
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+
+            // Add click handler for create request button
+            const requestButton = card.querySelector('.create-request');
+            if (requestButton) {
+                requestButton.addEventListener('click', () => createRequest(item));
+            }
+
+            return card;
+        }
+
+        fetchAndDisplayItems(); // Initial fetch on page load
+    </script>
+</body>
+</html>
