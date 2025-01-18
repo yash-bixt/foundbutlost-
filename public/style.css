@@ -10,23 +10,83 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  background-color: white;
+  padding: 5px;
 }
 
-.container {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 30px;
+.page-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 1200px;
+}
+
+.site-title {
+  font-family: 'Dancing Script', cursive;
+  text-align: center;
+  font-size: 2.5rem;
+  color: #ff9800;
+  margin-bottom: 2rem;
+  
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-container {
+  display: flex;
+  
+  
+  overflow: hidden;
+  
+  flex-direction: row;
+  justify-content: space-around;
+
+}
+
+.form-section {
+  background-color: #ff9800;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  padding: 2rem;
+  border-radius: 20px;
+  max-height: fit-content;
+  margin-top: 2rem;
+  width:35%;
+  height:85vh;
+}
+
+.image-section {
+  flex: 1;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-left: 15vh;
+  width:30%;
+  height:85vh;
+  
+  
+}
+
+.image-section img {
+  
+  width:100%;
+  height: 100%;
+
 }
 
 .tabs {
   display: flex;
   border-bottom: 1px solid #e5e7eb;
   margin-bottom: 24px;
+}
+.logo-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.logo-image {
+  width: 200px; /* Adjust this value to control the width of the logo */
+  height: fit-content; /* Maintain aspect ratio */
+  margin-top: 20px; /* Adjust top margin for positioning */
 }
 
 .tab-button {
@@ -49,12 +109,12 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background-color: #3b82f6;
+  background-color: #000;
   transition: width 0.3s ease;
 }
 
 .tab-button.active {
-  color: #3b82f6;
+  color: #000;
 }
 
 .tab-button.active::after {
@@ -103,14 +163,12 @@ label {
   padding: 12px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(45deg, #3b82f6, #2563eb);
+  background-color: #000;
   color: white;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
 }
 
 .submit-button:hover {
@@ -122,14 +180,27 @@ label {
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  color: #6b7280;
+  color: #000;
 }
 
 .toggle-link {
-  color: #3b82f6;
+  color: #000;
   text-decoration: none;
   font-weight: 500;
   margin-left: 5px;
   transition: all 0.3s ease;
 }
 
+@media (max-width: 768px) {
+  .main-container {
+      flex-direction: column;
+  }
+  
+  .image-section {
+      display: none;
+  }
+  
+  .form-section {
+      width: 100%;
+  }
+}
