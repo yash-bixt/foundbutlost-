@@ -45,7 +45,7 @@ body {
     border: none;
     cursor: pointer;
     padding: 10px;
-    color: #ffa726;
+    color: #FF6B00;
 }
 .logo-image{
   width: 150px; /* Adjust this value to control the width of the logo */
@@ -63,7 +63,7 @@ body {
 
 .website-name:hover {
     transform: translateY(-2px);
-    color: #ffa726;
+    color: #FF6B00;
 }
 
 .nav-items {
@@ -137,10 +137,23 @@ body {
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
 }
+.submit-button {
+    background-color: #ff9800; /* Success color */
+    color: #FFFFFF;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #ff9800; /* Darker green */
+}
 
 .expand-button:hover {
     transform: translateY(-2px);
-    background-color: #ffa726;
+    background-color: #FF6B00;
 }
 
 .form-container {
@@ -154,6 +167,27 @@ body {
     gap: 1.5rem;
     max-width: 800px;
     margin: 0 auto;
+}
+.edit-image{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.edit-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ff9800; /* Primary color */
+    font-weight: 700;
+    transition: all 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0;
+}
+
+.edit-button:hover {
+    color: #ff9811; /* Darker blue */
 }
 
 .form-group {
