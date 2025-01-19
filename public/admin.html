@@ -24,6 +24,115 @@
         #requests-section .expandable-card {
             margin-bottom: 20px;
         }
+
+        .item-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-card .card-content {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .item-card .image-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .item-card .item-details {
+            flex: 2;
+        }
+
+        .item-card .item-details .detail-row {
+            margin-bottom: 8px;
+        }
+
+        .edit-button {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .edit-button:hover {
+            background-color: #ff9800;
+        }
+
+        .edit-button:active {
+            background-color:#ff9800;
+        }
+
+        .form-container {
+            display: none;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .submit-button {
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #ff9800;
+        }
+
+        .submit-button:active {
+            background-color: #ff9800;
+        }
+
+        .expand-button {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .expand-button:hover {
+            background-color: #ff9800;
+        }
+
+        .expand-button:active {
+            background-color: #ff9800;
+        }
     </style>
 </head>
 <body>
@@ -54,7 +163,7 @@
                         <p>Add Item</p>
                         <button class="expand-button">Add</button>
                     </div>
-                    <div class="form-container" style="display: none;">
+                    <div class="form-container">
                         <form class="item-form" id="add-item-form">
                             <div class="form-group">
                                 <label for="name">Name</label>
@@ -103,7 +212,7 @@
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-        import { getFirestore, collection, addDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
         import { firebaseConfig } from './config.js';
 
         // Initialize Firebase
@@ -118,6 +227,9 @@
         const formContainer = document.querySelector('.form-container');
         const navItems = document.querySelectorAll('.nav-item');
         const sections = document.querySelectorAll('.section');
+
+        // Variable to hold the current editing item ID (if any)
+        let currentEditingItemId = null;
 
         // Navigation
         navItems.forEach(item => {
@@ -159,12 +271,12 @@
             });
         }
 
-        // Add Item Form Submit
+        // Add or Edit Item Form Submit
         addItemForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const formData = new FormData(addItemForm);
-            const newItem = {
+            const itemData = {
                 name: formData.get('name'),
                 location: formData.get('location'),
                 description: formData.get('description'),
@@ -177,18 +289,29 @@
             try {
                 const imageFile = formData.get('imageupload');
                 if (imageFile) {
-                    newItem.picturebase64 = await convertFileToBase64(imageFile);
+                    itemData.picturebase64 = await convertFileToBase64(imageFile);
                 }
 
-                await addDoc(collection(db, 'items'), newItem);
-                alert('Item added successfully!');
+                if (currentEditingItemId) {
+                    // Update the existing item
+                    const itemRef = doc(db, 'items', currentEditingItemId);
+                    await updateDoc(itemRef, itemData);
+                    alert('Item updated successfully!');
+                } else {
+                    // Add a new item
+                    await addDoc(collection(db, 'items'), itemData);
+                    alert('Item added successfully!');
+                }
+
+                // Reset form and hide the form container
                 addItemForm.reset();
                 formContainer.style.display = 'none';
                 expandButton.textContent = 'Add';
+                currentEditingItemId = null; // Clear the current editing ID
                 fetchItems();
             } catch (error) {
-                console.error('Error adding item:', error);
-                alert('Failed to add item.');
+                console.error('Error saving item:', error);
+                alert('Failed to save item.');
             }
         });
 
@@ -216,13 +339,47 @@
                                 <div class="detail-row">Type: ${item.type || 'No type'}</div>
                                 <div class="detail-row">Date: ${new Date(item.date).toLocaleDateString() || 'No date'}</div>
                             </div>
+                            <button class="edit-button" data-id="${doc.id}">Edit</button>
                         </div>
                     `;
                     itemsContainer.appendChild(card);
                 });
+
+                // Add event listener to all edit buttons
+                document.querySelectorAll('.edit-button').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const itemId = e.target.dataset.id;
+                        editItem(itemId);
+                    });
+                });
+
             } catch (error) {
                 console.error('Error fetching items:', error);
                 itemsContainer.innerHTML = 'Failed to load items.';
+            }
+        }
+
+        // Edit Item Function
+        async function editItem(itemId) {
+            const itemRef = doc(db, 'items', itemId);
+            const itemDoc = await getDoc(itemRef);
+
+            if (itemDoc.exists()) {
+                const item = itemDoc.data();
+
+                // Populate form with item details
+                document.getElementById('name').value = item.name;
+                document.getElementById('location').value = item.location;
+                document.getElementById('description').value = item.description;
+                document.getElementById('type').value = item.type;
+                document.getElementById('date').value = item.date;
+
+                // Show the form and change the button text to "Update"
+                formContainer.style.display = 'block';
+                expandButton.textContent = 'Close';
+
+                // Set the current editing item ID
+                currentEditingItemId = itemId;
             }
         }
 

@@ -24,7 +24,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
             line-height: 1.5;
             background-color: var(--background);
             color: #111827;
@@ -32,54 +32,124 @@
 
         .dashboard {
             min-height: 100vh;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
         }
 
         .dashboard-container {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 24px;
+        }
+        .dashboard-title h1{
+            color:#ffa726;
         }
 
         .navbar {
+            background-color: #fff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width:100%;
         }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .hamburger-menu {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--primary-orange);
+            transition: color 0.2s ease;
+        }
+
+        .hamburger-menu:hover {
+            color: #ffa726;
+        }
+        
 
         .dashboard-title {
             font-size: 24px;
             font-weight: 600;
-            color: #111827;
+            color: #ffa726;
+            display: flex;
+            align-items: center;
         }
 
         .logo {
-            width: 120px;
+            width: 140px;
             height: auto;
         }
 
         .items-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-            padding: 0.5vw;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap:24px;
+            padding: 8px;
         }
 
         .item-card {
-            background: #FFFFFF;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1);
-            padding: 24px;
+            background-color: white;
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #f0f0f0;
+            display: flex;
+            gap: 24px;
             position: relative;
+            width: 48%;
+        }
+
+        .item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-request {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 200px;
+        }
+
+        .item-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #f0f0f0;
+        }
+
+        .item-image img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-details {
+            flex: 1;
+            padding: 8px 16px;
         }
 
         .status-badge {
             position: absolute;
             top: 16px;
             right: 16px;
-            padding: 4px 12px;
-            border-radius: 16px;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 14px;
             font-weight: 500;
+            z-index: 1;
         }
 
         .status-available {
@@ -92,48 +162,38 @@
             color: var(--error-text);
         }
 
-        .item-image {
-            width: 100%;
-            height: 200px;
-            margin-bottom: 24px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #F9FAFB;
-            border-radius: 8px;
-        }
-
-        .item-image img {
-            max-width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
         .item-name {
             font-size: 24px;
             font-weight: 600;
             color: var(--primary-orange);
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
         .item-type {
             font-size: 16px;
-            color: var(--primary-orange);
-            margin-bottom: 16px;
+            color: #4B5563;
+            margin-bottom: 20px;
+            padding: 4px 12px;
+            background-color: #f3f4f6;
+            border-radius: 20px;
+            display: inline-block;
         }
 
         .details-row {
-            margin: 8px 0;
-            font-size: 14px;
+            margin: 12px 0;
+            font-size: 15px;
+            color: #374151;
         }
 
         .details-row strong {
-            color: #374151;
+            color: #111827;
+            font-weight: 500;
+            margin-right: 8px;
         }
 
         .location-text {
             color: var(--primary-blue);
+            font-weight: 500;
         }
 
         .request-button {
@@ -150,8 +210,12 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-top: 24px;
             transition: all 0.2s ease;
+        }
+
+        .request-button:not(:disabled):hover {
+            background-color: #1a1a1a;
+            transform: translateY(-1px);
         }
 
         .request-button:disabled {
@@ -159,38 +223,25 @@
             cursor: not-allowed;
         }
 
-        .request-button:hover:not(:disabled) {
-            background-color: #1F1F1F;
-        }
-
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #FFFFFF;
-            border-top: 1px solid #E5E7EB;
-            padding: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-        }
-
         .filter-button {
-            padding: 10px 20px;
-            background-color: #000000;
-            color: #FFFFFF;
+            padding: 10px 24px;
+            background-color: var(--primary-orange);
+            color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 20px;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width:max-content
         }
 
         .filter-button:hover {
-            background-color: #1F1F1F;
+            background-color: #ffa726;
+            transform: translateY(-1px);
         }
 
         .modal-overlay {
@@ -204,15 +255,24 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
+            backdrop-filter: blur(4px);
         }
 
         .modal-content {
             background: #FFFFFF;
-            padding: 24px;
-            border-radius: 12px;
+            padding: 32px;
+            border-radius: 16px;
             position: relative;
-            max-width: 400px;
+            max-width: 440px;
             width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 24px;
+            font-size: 20px;
+            color:#ffa726;
+           
         }
 
         .modal-close {
@@ -224,18 +284,27 @@
             font-size: 24px;
             cursor: pointer;
             color: #6B7280;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
         }
 
+        .modal-close:hover {
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+        
         .filter-panel {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 28px;
         }
 
         .filter-section h3 {
             margin-bottom: 16px;
             font-size: 16px;
             font-weight: 600;
+            color: #374151;
         }
 
         .checkbox-group {
@@ -247,14 +316,48 @@
         .checkbox-label {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             font-size: 14px;
             cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+
+        .checkbox-label:hover {
+            background-color: #f9fafb;
         }
 
         .checkbox-label input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid #d1d5db;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .items-container {
+                grid-template-columns: 1fr;
+            }
+
+            .item-card {
+                flex-direction: column;
+            }
+
+            .image-request {
+                width: 100%;
+            }
+
+            .item-image {
+                width: 100%;
+                height: 240px;
+            }
+
+            .item-details {
+                padding: 16px 0;
+            }
         }
     </style>
 </head>
@@ -262,7 +365,20 @@
     <div class="dashboard">
         <div class="dashboard-container">
             <div class="navbar">
+                <div class="navbar-left">
+                <button class="hamburger-menu">
+                
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
                 <h1 class="dashboard-title"><img class="logo" src="./logo.png" alt="Found but Lost"></h1>
+            </div>
+                
+                <button id="filterButton" class="filter-button">Filter</button>
+                
             </div>
             <div class="items-container" id="itemsContainer">
                 <!-- Items will be dynamically inserted here -->
@@ -270,9 +386,7 @@
         </div>
     </div>
 
-    <div class="bottom-bar">
-        <button id="filterButton" class="filter-button">Filter</button>
-    </div>
+    
 
     <!-- Filter Modal -->
     <div id="filterModal" class="modal-overlay" style="display: none;">
@@ -340,15 +454,27 @@
             card.className = 'item-card';
 
             card.innerHTML = `
-                <span class="status-badge ${item.status === 'requested' ? 'status-requested' : 'status-available'}">
-                    ${item.status || 'available'}
-                </span>
+                
+                <div class="image-request">
                 <div class="item-image">
                     ${item.picturebase64 
                         ? `<img src="${item.picturebase64}" alt="${item.name}">` 
                         : '<span>📷</span>'}
                 </div>
+                <button 
+                        class="request-button"
+                        data-item-id="${item.id}"
+                        ${item.status === 'requested' ? 'disabled' : ''}>
+                        Create Request
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 4.16666V15.8333M4.16666 10H15.8333" stroke="white" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
                 <div class="item-details">
+                    <span class="status-badge ${item.status === 'requested' ? 'status-requested' : 'status-available'}">
+                    ${item.status || 'available'}
+                </span>
                     <h3 class="item-name">${item.name}</h3>
                     <div class="item-type">${item.type}</div>
                     <div class="details-row">
@@ -361,15 +487,7 @@
                     <div class="details-row">
                         <strong>Date:</strong> ${new Date(item.createdAt).toLocaleDateString()}
                     </div>
-                    <button 
-                        class="request-button"
-                        data-item-id="${item.id}"
-                        ${item.status === 'requested' ? 'disabled' : ''}>
-                        Create Request
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 4.16666V15.8333M4.16666 10H15.8333" stroke="white" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
+                    
                 </div>
             `;
 
@@ -396,27 +514,26 @@
         }
 
         async function createRequest(item) {
-    try {
-        const requestData = {
-            itemId: item.id,
-            itemName: item.name,
-            itemType: item.type,
-            itemLocation: item.location,
-            itemDescription: item.description,
-            itemPictureBase64: item.picturebase64, // Add base64 image here
-            requestCreatedAt: serverTimestamp(),
-            status: 'requested'
-        };
+            try {
+                const requestData = {
+                    itemId: item.id,
+                    itemName: item.name,
+                    itemType: item.type,
+                    itemLocation: item.location,
+                    itemDescription: item.description,
+                    itemPictureBase64: item.picturebase64, // Add base64 image here
+                    requestCreatedAt: serverTimestamp(),
+                    status: 'requested'
+                };
 
-        await addDoc(collection(db, "requests"), requestData);
-        alert('Request created successfully!');
-    } catch (error) {
-        console.error('Error creating request:', error);
-        alert('Error creating request. Please try again.');
-        throw error;
-    }
-}
-
+                await addDoc(collection(db, "requests"), requestData);
+                alert('Request created successfully!');
+            } catch (error) {
+                console.error('Error creating request:', error);
+                alert('Error creating request. Please try again.');
+                throw error;
+            }
+        }
 
         function displayItems(filteredItems) {
             itemsContainer.innerHTML = '';
