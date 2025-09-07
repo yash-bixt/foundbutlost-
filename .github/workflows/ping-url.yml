@@ -1,1 +1,17 @@
+name: Ping EcoBin API Every 5 Minutes
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-url:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Curl EcoBin API URL
+        run: |
+          echo "Pinging https://ecobin-sih-app.onrender.com/api"
+          curl -s -o /dev/null -w "%{http_code}\n" https://ecobin-sih-app.onrender.com/api
 
