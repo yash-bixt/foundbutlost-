@@ -14,4 +14,3 @@ jobs:
         run: |
           echo "Pinging https://ecobin-sih-app.onrender.com/api"
           curl -s -o /dev/null -w "%{http_code}\n" https://ecobin-sih-app.onrender.com/api
-
