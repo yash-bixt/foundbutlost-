@@ -1,16 +1,34 @@
-name: Ping EcoBin API Every 5 Minutes
+name: Keep EcoBin API Alive
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
-  workflow_dispatch:
+    # Runs every 5 minutes
+    - cron: "*/5 * * * *"
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
-  ping-url:
+  ping-ecobin:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Curl EcoBin API URL
+      - name: Ping EcoBin API
         run: |
-          echo "Pinging https://ecobin-sih-app.onrender.com/api"
-          curl -s -o /dev/null -w "%{http_code}\n" https://ecobin-sih-app.onrender.com/api
+          echo "Pinging EcoBin API to keep it alive..."
+
+          API_URL="https://ecobin-sih-app.onrender.com/api/bin/submit"
+
+          # Perform the health check
+          response=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL" || echo "000")
+
+          if [ "$response" = "200" ]; then
+            echo "✅ EcoBin API is alive - HTTP $response"
+          else
+            echo "❌ EcoBin API might be down - HTTP $response"
+          fi
+
+          echo "Ping completed at $(date)"
+
+      - name: Log Activity
+        run: |
+          echo "EcoBin keep-alive job executed successfully"
+          echo "Next execution in 5 minutes"
